@@ -1,13 +1,4 @@
-```mermaid
-graph TD
-    Start[Versão Atual]
-    Start -->|Breaking Change| MAJOR["Incrementar MAJOR (1.0.0 -> 2.0.0)"]
-    Start -->|Nova Funcionalidade| MINOR["Incrementar MINOR (1.0.0 -> 1.1.0)"]
-    Start -->|Correção de Bug| PATCH["Incrementar PATCH (1.0.0 -> 1.0.1)"]
-    MAJOR --> End[Nova Versão]
-    MINOR --> End[Nova Versão]
-    PATCH --> End[Nova Versão]
-```
+
 
 ## Versionamento Semântico
 
@@ -17,11 +8,23 @@ O versionamento semântico segue o formato `MAJOR.MINOR.PATCH`:
 - **MINOR**: versão com adição de funcionalidades de forma compatível
 - **PATCH**: versão com correções de bugs compatíveis com versões anteriores
 
-Além disso, podem ser usados identificadores adicionais para pré-lançamentos (ex: `1.0.0-alpha.1`).
 
 ### Por que usar versionamento semântico?
 
 O versionamento semântico oferece clareza sobre a natureza das mudanças e ajuda consumidores da API a entenderem o impacto potencial de uma atualização.
+
+### Fluxograma
+
+```mermaid
+graph TD
+    Start[Versão Atual]
+    Start -->|Breaking Change| MAJOR["MAJOR (1.0.0 -> 2.0.0)"]
+    Start -->|Nova Funcionalidade| MINOR["MINOR (1.0.0 -> 1.1.0)"]
+    Start -->|Correção de Bug| PATCH["PATCH (1.0.0 -> 1.0.1)"]
+    MAJOR --> End[Nova Versão]
+    MINOR --> End[Nova Versão]
+    PATCH --> End[Nova Versão]
+```
 
 ## Exemplos de Docker Build com Versionamento Semântico
 

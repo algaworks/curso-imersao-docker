@@ -15,7 +15,4 @@ RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE $SERVER_PORT
 
 # Set entrypoint script
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
-
-# Define empty CMD to allow passing arguments
-CMD []
+ENTRYPOINT ["./docker-entrypoint.sh"]

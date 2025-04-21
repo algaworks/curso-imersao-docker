@@ -44,15 +44,19 @@ Este projeto utiliza um Docker ENTRYPOINT personalizado para facilitar a inicial
 ### Comandos especiais
 
 ```bash
-# Apenas verificar a conexão com o banco de dados
-docker run algatransito-api check-db
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=algatransito -e MYSQL_USER=alga -e MYSQL_PASSWORD=1234567 mysql:8.0 
+
 
 # Abrir um shell no contêiner
-docker run -it algatransito-api shell
+docker run --rm --name algatransito -e DB_HOST=172.31.219.460 -e DB_USERNAME=alga -e DB_PASSWORD=1234567 -p 8081:8081 algaworks/algatransito-api:1.0.0
 
 # Pular verificação de banco de dados
-docker run -e SKIP_DB_CHECK=true algatransito-api
+docker run --rm --name algatransito -e SKIP_DB_CHECK=true -e DB_HOST=172.31.219.460 -e DB_USERNAME=alga -e DB_PASSWORD=1234567 -p 8081:8081 algaworks/algatransito-api:1.0.0
 
-# Passar argumentos para o Spring
-docker run algatransito-api --logging.level.root=DEBUG
-```
+# Apenas verificar a conexão com o banco de dados
+docker run --rm --name algatransito -e SKIP_DB_CHECK=true -e DB_HOST=172.31.219.460 -e DB_USERNAME=alga -e DB_PASSWORD=1234567 -p 8081:8081 algaworks/algatransito-api:1.0.0 check-db
+
+docker run --rm --name algatransito -e SPRING_PROFILES_ACTIVE=prod -e SKIP_DB_CHECK=false -e DB_HOST=172.31.219.46 -e DB_USERNAME=alga -e DB_PASSWORD=1234567 -p 8081:8081 algaworks/algatransito-api:1.0.0     
+
+docker run --rm --name algatransito -e JAVA_OPTS="-Xms256M -Xmx1024M"  -e SPRING_PROFILES_ACTIVE=prod -e SKIP_DB_CHECK=false -e DB_HOST=172.31.219.46 -e DB_USERNAME=alga -e DB_PASSWORD=1234567 -p 8081:8081 algaworks/algatransito-api:1.0.0
+

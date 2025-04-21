@@ -6,11 +6,11 @@ set -e
 # Função para verificar a disponibilidade do MySQL
 check_mysql() {
   echo "Verificando conexão com MySQL em ${DB_HOST}..."
-  max_attempts=30
+  max_attempts=10
   attempt=0
   
   while [ $attempt -lt $max_attempts ]; do
-    if nc -z ${DB_HOST:-localhost} 3306; then
+    if nc -z ${DB_HOST:-localhost} 3306 2>/dev/null; then
       echo "MySQL está disponível!"
       return 0
     fi
@@ -35,23 +35,15 @@ if [ "$1" = "check-db" ]; then
   exit $?
 fi
 
-# Se o primeiro argumento for "shell", executar shell
-if [ "$1" = "shell" ]; then
-  exec sh
-fi
-
 # Para o comportamento padrão, verificar banco de dados antes de iniciar a aplicação
 if [ "$SKIP_DB_CHECK" != "true" ] && [ "$SPRING_PROFILES_ACTIVE" = "prod" ]; then
   check_mysql
 fi
 
 # Iniciar aplicação com as variáveis e argumentos configurados
-echo "Iniciando AlgaTransito API com perfil: ${SPRING_PROFILES_ACTIVE:-default}"
-echo "Porta configurada: ${SERVER_PORT:-8081}"
+echo "Iniciando AlgaTransito API com perfil: ${SPRING_PROFILES_ACTIVE:-dev}"
+echo "Porta configurada: ${SERVER_PORT:-9090}"
 echo "Opções JVM: ${JAVA_OPTS}"
-
-# Capturar SIGTERM para encerramento gracioso
-trap 'echo "Recebido SIGTERM, encerrando aplicação..."; exit 143' SIGTERM
 
 # Executar aplicação com configurações
 exec java $JAVA_OPTS -jar ${JAR_NAME:-app.jar} "$@"
