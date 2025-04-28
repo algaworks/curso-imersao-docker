@@ -1,0 +1,1 @@
+compartilhando dados entre container atraveis de volumes do tipo nomeados e agora com o boind mount com diretorios locais
