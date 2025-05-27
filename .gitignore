@@ -3,3 +3,4 @@
 **/.gradle
 **/build
 **/.mvn
+**/.elasticbeanstalk/app_versions

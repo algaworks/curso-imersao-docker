@@ -1,0 +1,26 @@
+services:
+  mysql:
+    extends:
+      file: docker-compose-mysql.yml
+      service: mysql
+
+  algatransito:
+    extends:
+      file: docker-compose-v3.yml
+      service: algatransito
+    # You can override or add configurations here
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+networks:
+  alga-net:
+
+volumes:
+  mysql-data:
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_password.txt

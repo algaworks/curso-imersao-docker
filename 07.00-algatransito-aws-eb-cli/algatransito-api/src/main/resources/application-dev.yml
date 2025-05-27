@@ -1,0 +1,5 @@
+spring:
+  jpa:
+    show-sql: true
+server:
+  port: ${SERVER_PORT:9090}

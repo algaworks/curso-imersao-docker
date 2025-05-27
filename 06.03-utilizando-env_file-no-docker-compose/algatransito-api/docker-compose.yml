@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env.mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - alga-net
+
+  algatransito:
+    image: algaworks/algatransito-api:1.0.0
+    container_name: algatransito
+    ports:
+      - 8082:8082
+    env_file:
+      - .env.app
+    networks:
+      - alga-net
+    depends_on:
+      - mysql
+      
+networks:
+  alga-net:
+  
+volumes:
+  mysql-data:
+  

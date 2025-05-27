@@ -1,0 +1,64 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    profiles:
+      - services
+      - app
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env.mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - alga-net
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  algatransito:
+    build:
+      context: .
+      dockerfile: gradle-multistage.Dockerfile
+      args:
+        - ENV=prod
+    container_name: algatransito
+    profiles:
+      - app
+    ports:
+      - 8082:8082
+    env_file:
+      - .env.app
+    networks:
+      - alga-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:8082/actuator/health | grep -i UP || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+   
+networks:
+  alga-net:
+  
+volumes:
+  mysql-data:

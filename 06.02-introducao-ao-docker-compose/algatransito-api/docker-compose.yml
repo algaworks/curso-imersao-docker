@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: algatransito 
+      MYSQL_USER: alga 
+      MYSQL_PASSWORD: 1234567
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - alga-net
+
+
+  algatransito:
+    image: algaworks/algatransito-api:1.0.0
+    container_name: algatransito
+    ports:
+      - 8082:8082
+    environment:
+      JAVA_OPTS: "-Xms256M -Xmx1024M" 
+      DB_HOST: mysql 
+      DB_USERNAME: alga 
+      DB_PASSWORD: 1234567 
+    networks:
+      - alga-net
+    depends_on:
+      - mysql
+      
+networks:
+  alga-net:
+  
+volumes:
+  mysql-data:
+  
