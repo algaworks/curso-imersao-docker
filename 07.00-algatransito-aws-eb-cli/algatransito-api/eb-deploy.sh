@@ -30,7 +30,7 @@ if [[ -z "$ENVIRONMENTS" ]]; then
   # No environments exist, create one
   echo "No environments found. Creating new environment: $ENV_NAME with RDS MySQL 8.0.35"
   eb create $ENV_NAME --profile $PROFILE \
-    --instance_type t3a.small \
+    --instance_type t3a.micro \
     --single \
     --keyname my-mac-high \
     --database \
@@ -60,7 +60,7 @@ else
     
     if [ "$CHOICE" == "1" ]; then
       eb create $ENV_NAME --profile $PROFILE \
-        --instance_type t3a.small \
+        --instance_type t3a.micro \
         --single \
         --keyname my-mac-high \
         --database \

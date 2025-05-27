@@ -1,0 +1,36 @@
+services:
+  mysql:
+      image: mysql:8.0
+      container_name: mysql
+      profiles:
+        - services
+        - app
+      ports:
+        - "3306:3306"
+      env_file:
+        - .env.mysql
+      volumes:
+        - mysql-data:/var/lib/mysql
+      networks:
+        - alga-net
+      restart: on-failure
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 10s
+      deploy:
+        resources:
+          limits:
+            cpus: '0.5'
+            memory: 512M
+
+  kafka:
+
+  rabbitmq:
+
+  redis:
+
+volumes:
+  mysql-data:

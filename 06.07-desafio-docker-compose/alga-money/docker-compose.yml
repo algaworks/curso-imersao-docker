@@ -1,0 +1,11 @@
+services:
+  algamoney:
+    build:
+      context: .
+      dockerfile: multistage.Dockerfile
+      args:
+        - ENV=prod
+    image: algamoney:latest
+    container_name: algamoney
+    ports:
+      - "8081:80"
