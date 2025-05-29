@@ -1,3 +1,6 @@
+include:
+ - docker-compose-network
+
 services:
   mysql:
     image: mysql:8.0
@@ -32,9 +35,6 @@ services:
     networks:
       - alga-net
     restart: on-failure
-
-networks:
-  alga-net:
 
 volumes:
   mysql-data:

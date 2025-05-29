@@ -6,7 +6,7 @@ services:
       dockerfile: gradle-multistage.Dockerfile
     container_name: algatransito
     environment:
-      JAVA_OPTS: "-Xms256M -Xmx256M"
+      JAVA_OPTS: "-Xms256M -Xmx512M"
       SERVER_PORT: 8082
       SPRING_PROFILES_ACTIVE: prod
       DB_HOST: $RDS_HOSTNAME
@@ -26,5 +26,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
-          memory: '512M'
+          cpus: '0.5'
+          memory: '716M'

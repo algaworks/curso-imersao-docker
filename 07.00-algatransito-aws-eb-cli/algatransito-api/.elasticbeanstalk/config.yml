@@ -3,10 +3,10 @@ branch-defaults:
     environment: algatransito-dev
     group_suffix: null
   master:
-    environment: null
+    environment: algatransito-dev
     group_suffix: null
 global:
-  application_name: algatransito-dev-api
+  application_name: algatransito-api
   default_ec2_keyname: null
   default_platform: Docker
   default_region: us-east-1
