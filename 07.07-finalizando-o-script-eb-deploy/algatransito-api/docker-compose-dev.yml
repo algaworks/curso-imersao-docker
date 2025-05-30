@@ -1,0 +1,43 @@
+include:
+  - docker-compose-network.yml
+
+services:
+  mysql:
+    extends:
+      file: docker-compose-tools.yml
+      service: mysql
+    container_name: mysql_alga
+    ports:
+      - "3307:3306"
+
+  algatransito:
+    build:
+      context: .
+      dockerfile: gradle-multistage.Dockerfile
+      args:
+        - ENV=prod
+    container_name: algatransito
+    ports:
+      - 8082:8082
+    env_file:
+      - .env.app
+    networks:
+      - alga-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:8082/actuator/health | grep -i UP || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+volumes:
+  mysql-data:

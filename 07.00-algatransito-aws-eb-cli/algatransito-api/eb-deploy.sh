@@ -1,85 +1,83 @@
 #!/bin/bash
 
-# Check if profile is provided
-PROFILE=${1:-default}
-ENV_NAME=${2:-algatransito-dev}  # Default environment name if not provided
-DB_USER=${3:-admin}
-DB_PASS=${4:-SenhaForte123!}
-DB_NAME=${5:-algatransito}
+set -e
 
-echo "Deploying to Elastic Beanstalk using profile: $PROFILE"
-echo "Target environment: $ENV_NAME"
+# Função para exibir mensagens de erro
+erro() {
+  echo "Erro: $1" >&2
+  exit 1
+}
 
-echo "Database user: $DB_USER"
-echo "Database name: $DB_NAME"
+# Argumentos e variáveis padrão
+ENV_NAME="${1:-algatransito-prod}"
+DB_USER="${2:-algatransito}"
+DB_PASS="${3:-SenhaForte123!}"
 
-# Initialize Elastic Beanstalk (skip if already initialized)
+KEYNAME="${KEYNAME:-aws-eb-algatransito}"
+INSTANCE_TYPE="${INSTANCE_TYPE:-t3.micro}"
+DB_VERSION="${DB_VERSION:-8.0}"
+DB_SIZE="${DB_SIZE:-20}"
+
+# Exibe informações do deploy
+echo "==== Deploy Elastic Beanstalk ===="
+echo "Ambiente de destino: $ENV_NAME"
+echo "Usuário do banco de dados: $DB_USER"
+echo "Nome do par de chaves: $KEYNAME"
+echo "Tipo de instância: $INSTANCE_TYPE"
+echo "Versão do MySQL: $DB_VERSION"
+echo "Tamanho do banco: $DB_SIZE GB"
+echo "=================================="
+
+# Inicializa o Elastic Beanstalk (pula se já estiver inicializado)
 if [ ! -d ".elasticbeanstalk" ]; then
-  echo "Initializing EB CLI..."
-  eb init --profile $PROFILE
+  echo "Inicializando EB CLI..."
+  eb init || erro "Falha ao inicializar EB CLI"
 else
-  echo "EB already initialized. Updating configuration..."
-  sed -i "/profile:/c\  profile: $PROFILE" .elasticbeanstalk/config.yml
+  echo "EB já inicializado."
 fi
 
-# Check if environment exists
-echo "Checking environments..."
-ENVIRONMENTS=$(eb list --profile $PROFILE | grep -v '^$')
+create_eb_environment() {
+  # Solicita usuário/senha se não definidos
+  if [ -z "$DB_USER" ]; then
+    read -p "Informe o usuário do banco de dados: " DB_USER
+  fi
+  if [ -z "$DB_PASS" ]; then
+    read -s -p "Informe a senha do banco de dados: " DB_PASS
+    echo
+  fi
 
-if [[ -z "$ENVIRONMENTS" ]]; then
-  # No environments exist, create one
-  echo "No environments found. Creating new environment: $ENV_NAME with RDS MySQL 8.0.35"
-  eb create $ENV_NAME --profile $PROFILE \
-    --instance_type t3.micro \
+  echo "Criando ambiente $ENV_NAME com RDS MySQL $DB_VERSION..."
+  eb create "$ENV_NAME" \
+    --instance_type "$INSTANCE_TYPE" \
     --single \
-    --keyname my-mac-high \
+    --keyname "$KEYNAME" \
     --database \
     --database.engine mysql \
-    --database.version 8.0.35 \
-    --database.instance db.t3.micro \
-    --database.size 20 \
-    --database.username $DB_USER \
-    --database.password $DB_PASS
+    --database.version "$DB_VERSION" \
+    --database.instance "db.$INSTANCE_TYPE" \
+    --database.size "$DB_SIZE" \
+    --database.username "$DB_USER" \
+    --database.password "$DB_PASS" || erro "Falha ao criar ambiente"
+}
+
+# Lista ambientes existentes
+echo "Verificando ambientes existentes..."
+ENVIRONMENTS=$(eb list | grep -v '^$')
+
+if [[ -z "$ENVIRONMENTS" ]]; then
+  # No environments exist
+  create_eb_environment
+  exit 0
+elif echo "$ENVIRONMENTS" | grep -q "$ENV_NAME"; then
+  # Environment exists
+  echo "Ambiente $ENV_NAME já existe. Definindo como padrão."
+  eb use "$ENV_NAME" || erro "Falha ao definir ambiente padrão"
 else
-  # Environment exists, check if our target env exists
-  if echo "$ENVIRONMENTS" | grep -q "$ENV_NAME"; then
-    echo "Environment $ENV_NAME exists"
-    # Set it as default environment
-    echo "Setting $ENV_NAME as default environment"
-    eb use $ENV_NAME --profile $PROFILE
-  else
-    # Our target environment doesn't exist
-    echo "Environment $ENV_NAME not found. Available environments:"
-    echo "$ENVIRONMENTS"
-    
-    # Ask user what to do
-    echo "Do you want to:"
-    echo "1. Create new environment: $ENV_NAME with RDS MySQL 8.0.35"
-    echo "2. Use an existing environment"
-    read -p "Enter choice (1/2): " CHOICE
-    
-    if [ "$CHOICE" == "1" ]; then
-      eb create $ENV_NAME --profile $PROFILE \
-        --instance_type t3.micro \
-        --single \
-        --keyname my-mac-high \
-        --database \
-        --database.engine mysql \
-        --database.version 8.0.35 \
-        --database.instance db.t3.micro \
-        --database.size 20 \
-        --database.username $DB_USER \
-        --database.password $DB_PASS
-    else
-      read -p "Enter name of existing environment to use: " SELECTED_ENV
-      eb use $SELECTED_ENV --profile $PROFILE
-      ENV_NAME=$SELECTED_ENV
-    fi
-  fi
+  # Environment doesn't exist
+  create_eb_environment
+  exit 0
 fi
 
-# Deploy to the environment
-echo "Deploying to environment: $ENV_NAME"
-eb deploy --profile $PROFILE
-
-echo "Deployment completed!"
+echo "Realizando deploy no ambiente: $ENV_NAME"
+eb deploy || erro "Falha no deploy"
+echo "Deploy finalizado com sucesso!"
