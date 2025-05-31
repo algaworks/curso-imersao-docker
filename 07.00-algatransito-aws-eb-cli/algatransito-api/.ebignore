@@ -1,9 +1,0 @@
-# Ignore development and local files
-.git/
-.idea/
-.vscode/
-node_modules/
-*.log
-*.md
-.env.local
-.DS_Store
