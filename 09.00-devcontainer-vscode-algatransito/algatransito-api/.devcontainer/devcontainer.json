@@ -1,0 +1,30 @@
+{
+    "name": "Java Development",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "dev",
+    "workspaceFolder": "/workspace",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest",
+            "ppa": "false"
+        },
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "21",
+            "jdkDistro": "zulu",
+            "installMaven": "true",
+            "installGradle": "true"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "ms-azuretools.vscode-docker",
+                "mikestead.dotenv",
+                "Postman.postman-for-vscode"
+            ]
+        }
+    },
+    "forwardPorts": [8080, 3306]
+}
