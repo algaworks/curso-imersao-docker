@@ -10,4 +10,4 @@ public class AlgatransitoApiApplication {
 		SpringApplication.run(AlgatransitoApiApplication.class, args);
 	}
 
-}
+	}

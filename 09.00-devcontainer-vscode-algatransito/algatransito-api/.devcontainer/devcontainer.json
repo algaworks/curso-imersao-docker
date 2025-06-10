@@ -2,7 +2,7 @@
     "name": "Java Development",
     "dockerComposeFile": "docker-compose.yml",
     "service": "dev",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspaces",
     "features": {
         "ghcr.io/devcontainers/features/git:1": {
             "version": "latest",
@@ -12,7 +12,9 @@
             "version": "21",
             "jdkDistro": "zulu",
             "installMaven": "true",
-            "installGradle": "true"
+            "mavenVersion": "3.9.8",
+            "installGradle": "true",
+            "gradleVersion": "8.8"
         }
     },
     "customizations": {
@@ -24,6 +26,9 @@
                 "mikestead.dotenv",
                 "Postman.postman-for-vscode"
             ]
+        },
+        "jetbrains" : {
+            "backend" : "IntelliJ"
         }
     },
     "forwardPorts": [8080, 3306]
