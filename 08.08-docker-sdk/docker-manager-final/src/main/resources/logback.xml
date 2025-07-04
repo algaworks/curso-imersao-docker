@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+    <!-- Logger específico para a aplicação -->
+    <logger name="com.algaworks.docker" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+    <!-- Logger para Docker Java SDK (menos verboso) -->
+    <logger name="com.github.dockerjava" level="WARN" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+</configuration>

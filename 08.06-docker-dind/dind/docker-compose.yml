@@ -1,0 +1,54 @@
+services:
+  
+  docker-daemon:
+    image: docker:24-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ''
+    volumes:
+      - docker-data:/var/lib/docker
+    healthcheck:
+      test: ['CMD', 'docker', 'info']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  java-ci-pipeline:
+    image: docker:24-cli
+    depends_on:
+      docker-daemon:
+        condition: service_healthy
+    environment:
+      - DOCKER_HOST=tcp://docker-daemon:2375
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: |
+      sh -c "
+        echo 'Iniciando o pipeline de CI/CD para Java...'
+        echo 'Estrutura do projeto:'
+        find . -name '*.java' -o -name 'Dockerfile'
+
+        echo 'Realizando o build do projeto Java...'
+        docker build -t java-app:v1.0.0 .
+
+        echo 'Verifcando se a imagem foi criada com sucesso...'
+        docker images | grep java-app:v1.0.0 
+
+        echo 'Iniciando o container Java...'
+        docker run --name java-test java-app:v1.0.0 > /tmp/output.log 2>&1
+
+        if [ $$? -eq 0 ]; then
+          echo 'Container Java iniciado com sucesso!'
+
+          cat /tmp/output.log
+        else
+          echo 'Erro ao iniciar o container Java. Verifique os logs.'
+          exit 1
+        fi
+
+        echo 'Pipeline Java CI/CD concluído com sucesso!'
+      "
+
+volumes:
+  docker-data:

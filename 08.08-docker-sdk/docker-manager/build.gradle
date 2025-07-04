@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.algaworks.docker'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Docker Java SDK
+    // implementation 'com.github.docker-java:docker-java-core:3.3.4'
+    implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.4'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    implementation 'org.testcontainers:postgresql:1.19.8'
+}
+
+application {
+    mainClass = 'com.algaworks.docker.DockerManagerApp'
+}
+
+// Configuração de encoding
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Configuração para criar JAR executável
+jar {
+    archiveBaseName = 'docker-sdk-manager'
+    archiveVersion = '1.0.0'
+    
+    manifest {
+        attributes(
+            'Main-Class': 'com.algaworks.docker.DockerManagerApp'
+        )
+    }
+    
+    // Incluir todas as dependências no JAR (fat JAR)
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

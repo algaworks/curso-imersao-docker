@@ -2,7 +2,7 @@ services:
   dev:
     image: mcr.microsoft.com/devcontainers/base:ubuntu
     volumes:
-      - ..:/workspaces/algatransito:cached
+      - ..:/workspaces/:cached
     command: sleep infinity
     depends_on:
       - mysql

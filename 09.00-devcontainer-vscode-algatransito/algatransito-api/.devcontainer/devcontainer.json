@@ -22,7 +22,6 @@
             "settings": {},
             "extensions": [
                 "vscjava.vscode-java-pack",
-                "ms-azuretools.vscode-docker",
                 "mikestead.dotenv",
                 "Postman.postman-for-vscode"
             ]

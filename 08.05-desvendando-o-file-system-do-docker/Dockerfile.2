@@ -1,0 +1,17 @@
+FROM ubuntu:24.04
+
+LABEL maintainer="highlander.dantas"
+
+RUN apt-get update && apt-get install -y openjdk-21-jdk
+
+# Cria diretório da aplicação
+WORKDIR /app
+
+# Copia o arquivo Java para o container
+COPY MyApp.java /app/
+
+# Compila a classe Java
+RUN javac MyApp.java
+
+# Executa a classe Java diretamente
+CMD ["java", "MyApp"]

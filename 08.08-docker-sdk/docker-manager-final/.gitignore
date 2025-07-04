@@ -1,0 +1,18 @@
+# Maven
+target/
+
+# Gradle
+build/
+.gradle/
+gradle-app.setting
+
+# IDEs
+*.iml
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
