@@ -13,7 +13,7 @@ RUN gradle clean bootJar
 
 ## STAGE RUN
 # Use a imagem Eclipse Temurin JRE 21 como imagem base para a etapa de execução
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:21-jre-alpine-3.21
 
 # Define um argumento de build para o perfil de ambiente
 ARG ENV=prod
@@ -24,11 +24,11 @@ ENV JAR_NAME=algatransito-api.jar \
     SPRING_PROFILES_ACTIVE=$ENV \
     TZ=America/Sao_Paulo
     
-RUN groupadd -r spring && useradd -r -g spring spring && \
-    apt-get update \
-    && apt-get install -y wget tzdata \
+RUN addgroup -S spring && adduser -S -G spring spring && \
+    apk update \
+    && apk add --no-cache wget tzdata  \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
+    && apk del wget
     
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
