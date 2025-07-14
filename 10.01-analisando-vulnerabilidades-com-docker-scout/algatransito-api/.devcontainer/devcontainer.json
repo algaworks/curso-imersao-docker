@@ -1,0 +1,43 @@
+
+{
+	"name": "Algatransito Development",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "dev",
+	"workspaceFolder": "/workspaces",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "21",
+			"jdkDistro": "zulu",
+			"installMaven": "true",
+			"mavenVersion": "3.9.8",
+			"installGradle": "true",
+			"gradleVersion": "8.8"
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"version": "latest",
+			"ppa":  "false"
+		},
+		"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+			"setLocale": true,
+			"theme": "robbyrussell",
+			"plugins": "git ",
+			"desiredLocale": "en_US.UTF-8 UTF-8"
+		},
+		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+			"plugins": "ssh-agent npm zsh-autosuggestions zsh-syntax-highlighting",
+			"omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions https://github.com/zsh-users/zsh-syntax-highlighting",
+			"username": "vscode"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vscjava.vscode-java-pack",
+				"mikestead.dotenv",
+				"Postman.postman-for-vscode",
+				"cweijan.vscode-database-client2"
+			]
+		}
+	},
+	"forwardPorts": [8082, 3306]
+}

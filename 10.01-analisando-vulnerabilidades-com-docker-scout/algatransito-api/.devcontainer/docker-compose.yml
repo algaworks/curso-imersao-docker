@@ -1,0 +1,58 @@
+services:
+
+  dev:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    container_name: algatransito_devcontainer
+    volumes:
+      - ..:/workspaces/algatransito:cached
+    ports:
+      - 8082:8082
+    command: sleep infinity
+    environment:
+      JAVA_OPTS: "-Xms256M -Xmx716M" 
+      DB_HOST: mysql
+      DB_USERNAME: alga 
+      DB_PASSWORD: 1234567
+      SERVER_PORT: "8082"
+      DB_PORT: 3306
+      DB_NAME: algatransito
+    networks:
+      - devnet
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: on-failure
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: algatransito
+      MYSQL_USER: alga
+      MYSQL_PASSWORD: 1234567
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - devnet
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+volumes:
+  mysql-data:
+
+networks:
+  devnet:
+    driver: bridge

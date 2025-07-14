@@ -1,0 +1,32 @@
+services:
+  algatransito:
+    build:
+      context: .
+      dockerfile: gradle-multistage.Dockerfile
+      args:
+        - ENV=prod
+    container_name: algatransito
+    ports:
+      - 80:8082
+    environment:
+      JAVA_OPTS: "-Xms256M -Xmx512M" 
+      SERVER_PORT: 8082
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: $RDS_HOSTNAME
+      DB_PORT: $RDS_PORT
+      DB_NAME: $RDS_DB_NAME
+      DB_USERNAME: $RDS_USERNAME
+      DB_PASSWORD: $RDS_PASSWORD
+      SMTP_API_KEY: $SMTP_API_KEY
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:8082/actuator/health | grep -i UP || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 716M

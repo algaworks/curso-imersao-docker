@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
+  jpa:
+    show-sql: false
+
+email:
+  config:
+    smtp: ${SMTP_URL}
+
+server:
+  port: 8082

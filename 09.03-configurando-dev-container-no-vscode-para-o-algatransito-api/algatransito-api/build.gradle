@@ -1,0 +1,50 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+}
+
+group = 'com.algaworks.algatransito'
+version = '0.0.1-SNAPSHOT'
+description = 'API do AlgaTransito'
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+    
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+
+    // Annotation processor for Lombok
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+bootJar {
+    archiveFileName = 'algatransito-api.jar'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('dockerComposeUp', Exec) {
+    workingDir project.rootDir
+    commandLine 'docker', 'compose', 'up', '--build'
+}
