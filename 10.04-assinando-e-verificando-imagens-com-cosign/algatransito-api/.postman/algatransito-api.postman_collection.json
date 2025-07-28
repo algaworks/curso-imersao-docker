@@ -1,0 +1,409 @@
+{
+	"info": {
+		"_postman_id": "d7f8b9a1-2c3d-4e5f-6g7h-8i9j0k1l2m3n",
+		"name": "AlgaTransito API",
+		"description": "Collection completa da API do AlgaTransito com todos os endpoints para gestão de proprietários, veículos e autuações.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Proprietários",
+			"item": [
+				{
+					"name": "Listar Proprietários",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/proprietarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proprietarios"
+							]
+						},
+						"description": "Lista todos os proprietários cadastrados no sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Proprietário por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/proprietarios/{{proprietario_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proprietarios",
+								"{{proprietario_id}}"
+							]
+						},
+						"description": "Busca um proprietário específico pelo ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Proprietário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"telefone\": \"11999887766\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/proprietarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proprietarios"
+							]
+						},
+						"description": "Cadastra um novo proprietário no sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Proprietário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva Santos\",\n  \"email\": \"joao.silva.santos@email.com\",\n  \"telefone\": \"11999887755\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/proprietarios/{{proprietario_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proprietarios",
+								"{{proprietario_id}}"
+							]
+						},
+						"description": "Atualiza os dados de um proprietário existente."
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Proprietário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/proprietarios/{{proprietario_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"proprietarios",
+								"{{proprietario_id}}"
+							]
+						},
+						"description": "Remove um proprietário do sistema."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestão de proprietários de veículos."
+		},
+		{
+			"name": "Veículos",
+			"item": [
+				{
+					"name": "Listar Veículos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/veiculos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos"
+							]
+						},
+						"description": "Lista todos os veículos cadastrados no sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Veículo por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/veiculos/{{veiculo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos",
+								"{{veiculo_id}}"
+							]
+						},
+						"description": "Busca um veículo específico pelo ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Veículo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"placa\": \"ABC1D23\",\n  \"proprietario\": {\n    \"id\": {{proprietario_id}}\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/veiculos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos"
+							]
+						},
+						"description": "Cadastra um novo veículo no sistema. A placa deve seguir o padrão ABC1D23 (3 letras, 1 número, 1 letra ou número, 2 números)."
+					},
+					"response": []
+				},
+				{
+					"name": "Apreender Veículo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/veiculos/{{veiculo_id}}/apreensao",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos",
+								"{{veiculo_id}}",
+								"apreensao"
+							]
+						},
+						"description": "Marca um veículo como apreendido."
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Apreensão do Veículo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/veiculos/{{veiculo_id}}/apreensao",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos",
+								"{{veiculo_id}}",
+								"apreensao"
+							]
+						},
+						"description": "Remove a apreensão de um veículo, voltando-o ao status regular."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestão de veículos."
+		},
+		{
+			"name": "Autuações",
+			"item": [
+				{
+					"name": "Listar Autuações do Veículo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/veiculos/{{veiculo_id}}/autuacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos",
+								"{{veiculo_id}}",
+								"autuacoes"
+							]
+						},
+						"description": "Lista todas as autuações de um veículo específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Autuação",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descricao\": \"Excesso de velocidade em via urbana\",\n  \"valorMulta\": 293.47\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/veiculos/{{veiculo_id}}/autuacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"veiculos",
+								"{{veiculo_id}}",
+								"autuacoes"
+							]
+						},
+						"description": "Registra uma nova autuação para um veículo específico."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestão de autuações de veículos."
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Verificar Saúde da Aplicação",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Endpoint do Spring Boot Actuator para verificar a saúde da aplicação."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de monitoramento da aplicação."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8082",
+			"type": "string",
+			"description": "URL base da API AlgaTransito"
+		},
+		{
+			"key": "base_url_debug",
+			"value": "http://localhost:8083",
+			"type": "string",
+			"description": "URL base da API AlgaTransito em modo debug"
+		},
+		{
+			"key": "proprietario_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID do proprietário para testes"
+		},
+		{
+			"key": "veiculo_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID do veículo para testes"
+		}
+	]
+}

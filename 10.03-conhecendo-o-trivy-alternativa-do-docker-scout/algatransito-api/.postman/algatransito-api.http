@@ -1,0 +1,123 @@
+# AlgaTransito API
+
+# Variáveis de ambiente
+@base_url = http://localhost:8082
+@proprietario_id = 1
+@veiculo_id = 1
+
+###
+# group: Proprietários
+# @name Listar Proprietários
+# Lista todos os proprietários cadastrados no sistema.
+GET {{base_url}}/proprietarios
+Content-Type: application/json
+
+###
+# group: Proprietários
+# @name Buscar Proprietário por ID
+# Busca um proprietário específico pelo ID.
+GET {{base_url}}/proprietarios/{{proprietario_id}}
+Content-Type: application/json
+
+###
+# group: Proprietários
+# @name Cadastrar Proprietário
+# Cadastra um novo proprietário no sistema.
+POST {{base_url}}/proprietarios
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "email": "joao.silva@email.com",
+  "telefone": "11999887766"
+}
+
+###
+# group: Proprietários
+# @name Atualizar Proprietário
+# Atualiza os dados de um proprietário existente.
+PUT {{base_url}}/proprietarios/{{proprietario_id}}
+Content-Type: application/json
+
+{
+  "nome": "João Silva Santos",
+  "email": "joao.silva.santos@email.com",
+  "telefone": "11999887755"
+}
+
+###
+# group: Proprietários
+# @name Remover Proprietário
+# Remove um proprietário do sistema.
+DELETE {{base_url}}/proprietarios/{{proprietario_id}}
+Content-Type: application/json
+
+###
+# group: Veículos
+# @name Listar Veículos
+# Lista todos os veículos cadastrados no sistema.
+GET {{base_url}}/veiculos
+Content-Type: application/json
+
+###
+# group: Veículos
+# @name Buscar Veículo por ID
+# Busca um veículo específico pelo ID.
+GET {{base_url}}/veiculos/{{veiculo_id}}
+Content-Type: application/json
+
+###
+# group: Veículos
+# @name Cadastrar Veículo
+# Cadastra um novo veículo no sistema. A placa deve seguir o padrão ABC1D23 (3 letras, 1 número, 1 letra ou número, 2 números).
+POST {{base_url}}/veiculos
+Content-Type: application/json
+
+{
+  "marca": "Toyota",
+  "modelo": "Corolla",
+  "placa": "ABC1D23",
+  "proprietario": {
+    "id": {{proprietario_id}}
+  }
+}
+
+###
+# group: Veículos
+# @name Apreender Veículo
+# Marca um veículo como apreendido.
+PUT {{base_url}}/veiculos/{{veiculo_id}}/apreensao
+Content-Type: application/json
+
+###
+# group: Veículos
+# @name Remover Apreensão do Veículo
+# Remove a apreensão de um veículo, voltando-o ao status regular.
+DELETE {{base_url}}/veiculos/{{veiculo_id}}/apreensao
+Content-Type: application/json
+
+###
+# group: Autuações
+# @name Listar Autuações do Veículo
+# Lista todas as autuações de um veículo específico.
+GET {{base_url}}/veiculos/{{veiculo_id}}/autuacoes
+Content-Type: application/json
+
+###
+# group: Autuações
+# @name Registrar Autuação
+# Registra uma nova autuação para um veículo específico.
+POST {{base_url}}/veiculos/{{veiculo_id}}/autuacoes
+Content-Type: application/json
+
+{
+  "descricao": "Excesso de velocidade em via urbana",
+  "valorMulta": 293.47
+}
+
+###
+# group: Health Check
+# @name Verificar Saúde da Aplicação
+# Endpoint do Spring Boot Actuator para verificar a saúde da aplicação.
+GET {{base_url}}/actuator/health
+Content-Type: application/json
