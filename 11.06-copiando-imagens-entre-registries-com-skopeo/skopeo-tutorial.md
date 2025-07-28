@@ -47,7 +47,7 @@ skopeo copy \
   --src-creds $DOCKER_TOKEN \
   --dest-creds AWS:$AWS_TOKEN \
   docker://highlanderdantas/algatransito-api:security \
-  docker://870769090724.dkr.ecr.sa-east-1.amazonaws.com/algatransito-api:1.0.0
+  docker://<AWS-ACCOUNT-ID>.dkr.ecr.sa-east-1.amazonaws.com/algatransito-api:1.0.0
 ```
 
 ## 🔐 Configuração de Credenciais
@@ -98,7 +98,7 @@ skopeo sync \
     --src-creds $DOCKER_TOKEN \
     --dest-creds AWS:$AWS_TOKEN \
     highlanderdantas/algatransito-api \
-    870769090724.dkr.ecr.sa-east-1.amazonaws.com
+    <AWS-ACCOUNT-ID>.dkr.ecr.sa-east-1.amazonaws.com
 ```
 
 
@@ -108,7 +108,7 @@ skopeo sync \
 ```bash
 aws ecr get-login-password --region sa-east-1 | \
   docker login --username AWS --password-stdin \
-  870769090724.dkr.ecr.sa-east-1.amazonaws.com
+  <AWS-ACCOUNT-ID>.dkr.ecr.sa-east-1.amazonaws.com
 ```
 
 ### Gerar key-pair Cosign
@@ -121,7 +121,7 @@ cosign generate-key-pair
 
 ```bash
 cosign sign --key cosign.key \
- 870769090724.dkr.ecr.sa-east-1.amazonaws.com/algatransito-api:1.0.0
+ <AWS-ACCOUNT-ID>.dkr.ecr.sa-east-1.amazonaws.com/algatransito-api:1.0.0
 ```
 
 ## 📝 Notas Importantes
