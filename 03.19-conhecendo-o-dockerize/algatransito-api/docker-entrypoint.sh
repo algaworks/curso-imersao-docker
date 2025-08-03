@@ -14,8 +14,5 @@ echo "Iniciando AlgaTransito API com perfil: ${SPRING_PROFILES_ACTIVE:-default}"
 echo "Porta configurada: ${SERVER_PORT:-8081}"
 echo "Opções JVM: ${JAVA_OPTS}"
 
-# Capturar SIGTERM para encerramento gracioso
-trap 'echo "Recebido SIGTERM, encerrando aplicação..."; exit 143' SIGTERM
-
 # Executar aplicação com configurações
 exec java $JAVA_OPTS -jar ${JAR_NAME:-app.jar} $args

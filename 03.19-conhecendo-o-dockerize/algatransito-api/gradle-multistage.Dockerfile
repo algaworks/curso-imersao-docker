@@ -1,5 +1,9 @@
 ## STAGE BUILD
-# Use the official Gradle image with JDK 21 as the base image for the build stage
+# Use the official G# Copy the built JAR file from the build stage to the runtime stage
+COPY --from=build /app/build/libs/$JAR_NAME .
+
+# Copy entrypoint script
+COPY --chown=spring:spring --chmod=755 docker-entrypoint.sh ./age with JDK 21 as the base image for the build stage
 FROM gradle:jdk21 AS build
 
 # Set the working directory inside the container
@@ -37,7 +41,8 @@ WORKDIR /app
 COPY --from=build /app/build/libs/$JAR_NAME .
 
 # Copy entrypoint script
-COPY --chown=spring:spring docker-entrypoint.sh ./
+COPY --chown=spring:spring --chmod=755 docker-entrypoint.sh ./
+
 
 USER spring
 
