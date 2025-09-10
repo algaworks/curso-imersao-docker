@@ -1,0 +1,40 @@
+{
+    // Configura como o VS Code atualiza a configuração de build do Java (interactive, automatic, disabled)
+    "java.configuration.updateBuildConfiguration": "interactive",
+    
+    // Ativa análise automática de nullability no código Java
+    "java.compile.nullAnalysis.mode": "automatic",
+    
+    // Permite continuar com debug mesmo quando há falhas de build
+    "java.debug.settings.onBuildFailureProceed": true,
+    
+    // Habilita CodeLens para executar e debugar código Java
+    "java.debug.settings.enableRunDebugCodeLens": true,
+    
+    // Força build antes de iniciar o debug
+    "java.debug.settings.forceBuildBeforeLaunch": true,
+    
+    // Habilita suporte a debug em código descompilado
+    "java.debug.settings.debugSupportOnDecompiledSource": "on",
+    
+    // Define argumentos da JVM para habilitar preview features
+    "java.debug.settings.vmArgs": "--enable-preview",
+    
+    // Define o nível de log do debugger Java como verboso
+    "java.debug.logLevel": "verbose",
+
+    // Ativa substituição automática de código durante debug (hot code replace)
+    "java.debug.settings.hotCodeReplace": "auto",
+    
+    // Organiza automaticamente os imports ao salvar arquivos Java
+    "java.saveActions.organizeImports": true,
+    
+    // Define URL do estilo de formatação de código Java (Google Style Guide)
+    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    
+    // Define o caminho padrão do registry Docker (vazio = Docker Hub)
+    "docker.defaultRegistryPath": "",
+    
+    // Desabilita a página inicial do Docker ao abrir o VS Code
+    "docker.showStartPage": false
+}

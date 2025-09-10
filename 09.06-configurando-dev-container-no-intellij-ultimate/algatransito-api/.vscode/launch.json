@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug AlgaTransito API (Attach Docker)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005,
+            "projectName": "algatransito-api",
+            "preLaunchTask": "docker-compose:start-debug",
+            "timeout": 60000,
+            "postDebugTask": "docker-compose:stop-debug",
+            "sourcePaths": [
+                "${workspaceFolder}/src/main/java",
+                "${workspaceFolder}/src/main/resources"
+            ]
+        }
+    ]
+}
